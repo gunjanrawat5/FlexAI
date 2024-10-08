@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../utils/Logo1.png';
 import { auth} from '../utils/firebase';
 import {signOut } from "firebase/auth";
+import { useSelector } from 'react-redux';
 
 const Header = () => {
     const navigate = useNavigate();
+    const user = useSelector(store => store.user)
     const handleSignOut = ()=> {
         signOut(auth).then(() => {
             navigate("/")
@@ -25,7 +27,7 @@ const Header = () => {
                 />
 
                 {/* User Icon and Sign Out */}
-                <div className='flex items-center'>
+                {user &&<div className='flex items-center'>
                     <img
                         alt='user-icon'
                         className='w-12 h-12 rounded-full'
@@ -35,6 +37,7 @@ const Header = () => {
                         Sign Out
                     </button>
                 </div>
+                }
             </div>
         </div>
     );

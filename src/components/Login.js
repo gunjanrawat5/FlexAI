@@ -7,10 +7,13 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "fir
 import { auth } from '../utils/firebase';
 import { useNavigate } from 'react-router-dom';
 import { updateProfile } from "firebase/auth";
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 
 const Login = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [isSignInForm, setIsSignInForm] = useState(true);
     const toggleSignInForm = () => {
         setIsSignInForm(!isSignInForm);
@@ -44,14 +47,15 @@ const Login = () => {
               }).then(() => {
                 // Profile updated!
                 // ...
+                const {uid,email,displayName} = auth.currentUser;
+                dispatch(addUser({uid:uid,email:email,displayName:displayName}))
+           
                 navigate("/browse")
               }).catch((error) => {
                 // An error occurred
                 // ...
                 setErrorMessage(errorMessage)
               });
-            console.log(user)
-            navigate("/browse")
         // ...
             })
             .catch((error) => {
